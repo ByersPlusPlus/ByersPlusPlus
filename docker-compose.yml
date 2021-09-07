@@ -1,0 +1,31 @@
+version: '3'
+
+services: 
+  db:
+    image: postgres
+    environment: 
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports: 
+      - '5433:5432'
+  youtube:
+    image: ghcr.io/byersplusplus/youtubeservice:develop
+    env_file: .youtubeservice.env
+    depends_on:
+      - db
+    volumes:
+      - ${PWD}/clientsecret.json:/clientsecret.json
+    command: ["wait-for-it", "db:5432", "--", "./youtubeservice-server"]
+    environment: 
+      DATABASE_URL: postgres://postgres:${DATABASE_PASSWORD}@db/postgres
+  user:
+    image: ghcr.io/byersplusplus/userservice:develop
+    env_file: .userservice.env
+    depends_on: 
+      - db
+      - youtube
+    ports: 
+      - "50051:50051"
+    environment: 
+      YTS_GRPC_ADDRESS: http://youtube:50051
+      DATABASE_URL: postgres://postgres:${DATABASE_PASSWORD}@db/postgres
+    command: ["wait-for-it", "db:5432", "--", "wait-for-it", "youtube:50051", "--timeout=0", "--", "./userservice-server"]
