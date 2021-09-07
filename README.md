@@ -41,7 +41,7 @@ After you set everything up, you can start the bot by running either `docker-com
 
 As of now, there is no way to determine if the bot is working fine other than checking the logs of the containers (those will be displayed if you ran `docker-compose up` or if you run `docker-compose logs -f` after running `docker-compose up -d`).
 
-**IMPORTANT:** The bot in its current state cannot run for longer t han about 3 hours (and some minutes) due to the YouTube API quota limit (which is at 10000 units per day) unless you apply for an extension at Google!
+**IMPORTANT:** The bot in its current state cannot run for longer than about 3 hours (and some minutes) due to the YouTube API quota limit (which is at 10000 units per day) unless you apply for an extension at Google!
 
 ## Contributing
 
